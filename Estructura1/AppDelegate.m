@@ -9,20 +9,45 @@
 #import "AppDelegate.h"
 
 #import "ViewController.h"
+#import "DemoViewController.h"
+#import "SideMenuViewController.h"
+#import "MFSideMenuContainerViewController.h"
 
 @implementation AppDelegate
+
+
+
+- (DemoViewController *)demoController {
+    return [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
+}
+
+- (UINavigationController *)navigationController {
+    return [[UINavigationController alloc]
+            initWithRootViewController:[self demoController]];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPhone" bundle:nil];
+        SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
+        SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
+        MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
+                                                        containerWithCenterViewController:[self navigationController]
+                                                        leftMenuViewController:leftSideMenuController
+                                                        rightMenuViewController:rightSideMenuController];
+        self.window.rootViewController = container;
+
     } else {
         self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPad" bundle:nil];
+          self.window.rootViewController = self.viewController;
     }
-    self.window.rootViewController = self.viewController;
+
+    
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
