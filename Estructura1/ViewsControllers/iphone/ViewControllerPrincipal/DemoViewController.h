@@ -10,7 +10,7 @@
 
 #import "SMPageControl.h"
 
-@interface DemoViewController : UIViewController<UIScrollViewDelegate>{
+@interface DemoViewController : UIViewController<UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>{
     UIImage *imageFoco;
     UILabel *tmpLabel;
     UILabel *contadorFoco;
@@ -20,9 +20,11 @@
     int cont2;
 }
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollFocos;
-@property (weak, nonatomic) IBOutlet UIView *viewFocos;
+@property (retain, nonatomic) IBOutlet UIScrollView *scrollFocos;
+@property (retain, nonatomic) IBOutlet UIView *viewFocos;
 
 @property (strong, nonatomic) IBOutlet SMPageControl *pageControlCust;
+
+@property (retain, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end

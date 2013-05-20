@@ -7,9 +7,10 @@
 
 #import "DemoViewController.h"
 #import "MFSideMenuContainerViewController.h"
+#import "DetalleViewController.h"
+#import "PrincipalCustomCell.h"
 
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-#define numeroFocos 23
+#define numeroFocos 15
 
 @implementation DemoViewController
 
@@ -18,7 +19,11 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+    
+    [self.collectionView registerClass:[PrincipalCustomCell class] forCellWithReuseIdentifier:@"PrincipalCustomCell"];
+    
     if(!self.title) self.title = @"Estructura 1!";
     
     [self setupMenuBarButtonItems];
@@ -87,7 +92,6 @@
     }];
 }
 
-#pragma mark -
 #pragma mark - Focos
 
 -(void)listaFocos{
@@ -218,18 +222,91 @@
     
     if (cont1 == 4) {
         
-        NSLog(@"currentPage %i",self.pageControlCust.currentPage);
-        
         CGFloat pageWidth = self.scrollFocos.frame.size.width;
         int page = floor((self.scrollFocos.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-        
-         NSLog(@"currentPage %f",floor((self.scrollFocos.contentOffset.x - pageWidth / 2) / pageWidth));
-        
         self.pageControlCust.currentPage = page;
         
         cont1=0;
     }
 }
+
+#pragma mark - CollectionView
+
+
+//Secciones del collectionview
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 4;
+}
+
+//Renglones de la seccion
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    
+    NSLog(@"%i",section);
+    
+    switch (section) {
+        case 0:
+            return 2;
+            break;
+        case 1:
+            return 6;
+            break;
+        case 2:
+            return 1;
+            break;
+        case 3:
+            return 3;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
+}
+
+//Contenido de las celdas
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    PrincipalCustomCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PrincipalCustomCell" forIndexPath:indexPath];
+    
+    switch (indexPath.section)
+    {
+            
+        case 0:{
+            
+            switch (indexPath.row)
+            {
+                case 0:
+                    cell.nombreImagen = @"scanners_cameras.png";
+                    cell.nombreTitulo = @"Cámara";
+                    break;
+                case 1:
+                    cell.nombreImagen = @"image_x_generic.png";
+                    cell.nombreTitulo = @"Fotos";
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+//Renglon seleccionado
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    DetalleViewController *detalleViewController = [[DetalleViewController alloc]initWithNibName:@"DetalleViewController" bundle:nil];
+    
+    [self presentViewController:detalleViewController animated:YES completion:nil];
+    
+}
+
 
 
 @end
