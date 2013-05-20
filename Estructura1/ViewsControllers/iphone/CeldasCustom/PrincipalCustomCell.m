@@ -25,7 +25,7 @@
 -(void)setNombreImagen:(NSString *)nombreImagen{
     NSLog(@"%@",nombreImagen);
     self.imagenCell.image = [UIImage imageNamed:nombreImagen];
-    NSLog(@"%@",self.nombreImagen);
+    NSLog(@"%@",self.imagenCell.image);
 }
 
 -(void)setNombreTitulo:(NSString *)nombreTitulo{

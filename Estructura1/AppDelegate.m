@@ -8,14 +8,12 @@
 
 #import "AppDelegate.h"
 
-#import "ViewController.h"
 #import "DemoViewController.h"
 #import "SideMenuViewController.h"
 #import "MFSideMenuContainerViewController.h"
+#import "XOSplashVideoController.h"
 
 @implementation AppDelegate
-
-
 
 - (DemoViewController *)demoController {
     return [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
@@ -31,25 +29,55 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
-        SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
-        MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
-                                                        containerWithCenterViewController:[self navigationController]
-                                                        leftMenuViewController:leftSideMenuController
-                                                        rightMenuViewController:rightSideMenuController];
-        self.window.rootViewController = container;
+    NSString *portraitVideoName = @"splash";
+    NSString *portraitImageName = @"Default.png";
+    NSString *landscapeVideoName = nil;
+    NSString *landscapeImageName = nil;
 
-    } else {
-        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPad" bundle:nil];
-          self.window.rootViewController = self.viewController;
-    }
-
+    // our video
+    NSURL *portraitUrl = [[NSBundle mainBundle] URLForResource:portraitVideoName withExtension:@"mp4"];
+    NSURL *landscapeUrl = [[NSBundle mainBundle] URLForResource:landscapeVideoName withExtension:@"mp4"];
     
+    // our splash controller
+    XOSplashVideoController *splashVideoController =
+    [[XOSplashVideoController alloc] initWithVideoPortraitUrl:portraitUrl
+                                            portraitImageName:portraitImageName
+                                                 landscapeUrl:landscapeUrl
+                                           landscapeImageName:landscapeImageName
+                                                     delegate:self];
+    
+    // we'll start out with the spash view controller in the window
+    self.window.rootViewController = splashVideoController;
     [self.window makeKeyAndVisible];
     
     return YES;
 }
+
+#pragma mark - Splash Delegate Methods
+
+- (void)splashVideoLoaded:(XOSplashVideoController *)splashVideo
+{
+    // load up our real view controller, but don't put it in to the window until the video is done
+    // if there's anything expensive to do it should happen in the background now
+    
+    
+    SideMenuViewController *leftSideMenuController = [[SideMenuViewController alloc] init];
+    SideMenuViewController *rightSideMenuController = [[SideMenuViewController alloc] init];
+    container = [MFSideMenuContainerViewController
+                                                    containerWithCenterViewController:[self navigationController]
+                                                    leftMenuViewController:leftSideMenuController
+                                                    rightMenuViewController:rightSideMenuController];
+    
+
+}
+
+- (void)splashVideoComplete:(XOSplashVideoController *)splashVideo
+{
+    // swap out the splash controller for our app's
+    self.window.rootViewController = container;
+}
+
+#pragma mark -
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
