@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<array>
+	<string>newspaper1.png</string>
+	<string>newspaper2.png</string>
+	<string>newspaper3.png</string>
+	<string>newspaper4.png</string>
+	<string>newspaper5.png</string>
+	<string>newspaper6.png</string>
+	<string>newspaper7.png</string>
+	<string>newspaper8.png</string>
+	<string>newspaper9.png</string>
+</array>
 </plist>
