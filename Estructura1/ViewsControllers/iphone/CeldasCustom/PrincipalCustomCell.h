@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PrincipalCustomCell : UICollectionViewCell
+@interface PrincipalCustomCell : UICollectionViewCell{
+    UIView *newView;
+    UIImageView *imageView;
+}
 
-@property (retain, nonatomic)  NSString *nombreImagen;
-@property (retain, nonatomic)  NSString *nombreTitulo;
-
-@property (retain, nonatomic) IBOutlet UIImageView *imagenCell;
-@property (retain, nonatomic) IBOutlet UILabel *lbTitulo;
+@property (retain, nonatomic)  NSArray *arraySectionRow;
 
 @end

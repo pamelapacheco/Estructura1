@@ -10,7 +10,7 @@
 #import "DetalleViewController.h"
 #import "PrincipalCustomCell.h"
 
-#define numeroFocos 15
+#define numeroFocos 9
 
 @implementation DemoViewController
 
@@ -134,13 +134,10 @@
         
         //Imagen del Foco
         
-//        imageFoco = [[UIImage alloc] initWithData:[[self.arrayFocos objectAtIndex:i]objectForKey:@"data"]];
-//        
-//        UIImage *imagenEscalada = [imageFoco  imageWithImage:imageFoco scaledToWidth:93.0f];
-//        newImag = [imagenEscalada crop:imagenEscalada rect:CGRectMake(0, 0, 93, 73)];
-//        
-//        
-//        [buttonFoco setBackgroundImage: newImag forState:UIControlStateNormal];
+        self.focosData = [[NSMutableArray alloc] initWithArray:[self getImagesFocos]];
+        
+        imageFoco = [UIImage imageNamed:[NSString stringWithFormat:@"%@",[self.focosData objectAtIndex:i]]];
+        [buttonFoco setBackgroundImage: imageFoco forState:UIControlStateNormal];
         
         // add targets and actions
         [buttonFoco addTarget:self action:@selector(BotonFoco:) forControlEvents:UIControlEventTouchUpInside];
@@ -151,13 +148,21 @@
         // add to a scroll
         [self.scrollFocos addSubview:buttonFoco];
         
-        
 		cx += _scrollFocos.frame.size.width;
-        
-       
     }
     
 	[self.scrollFocos setContentSize:CGSizeMake(cx/3,93)];
+}
+
+#pragma MARK - Plist Imagenes de los focos
+
+- (NSMutableArray *)getImagesFocos{
+    
+    NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"ListaImagenesFocos" ofType:@"plist"];
+    
+    arregloImagenesFocos = [[NSMutableArray alloc] initWithContentsOfFile:defaultStorePath];
+    
+    return arregloImagenesFocos;
 }
 
 -(void)BotonFoco:(id)sender {
@@ -241,8 +246,6 @@
 //Renglones de la seccion
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    NSLog(@"%i",section);
-    
     switch (section) {
         case 0:
             return 2;
@@ -254,7 +257,7 @@
             return 1;
             break;
         case 3:
-            return 3;
+            return 4;
             break;
             
         default:
@@ -269,31 +272,8 @@
     
     PrincipalCustomCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PrincipalCustomCell" forIndexPath:indexPath];
     
-    switch (indexPath.section)
-    {
-            
-        case 0:{
-            
-            switch (indexPath.row)
-            {
-                case 0:
-                    cell.nombreImagen = @"scanners_cameras.png";
-                    cell.nombreTitulo = @"Cámara";
-                    break;
-                case 1:
-                    cell.nombreImagen = @"image_x_generic.png";
-                    cell.nombreTitulo = @"Fotos";
-                    break;
-                default:
-                    break;
-            }
-        }
-            break;
-            
-        default:
-            break;
-    }
-    
+    cell.arraySectionRow = [NSArray arrayWithObjects:[NSDecimalNumber numberWithInt:indexPath.section],[NSDecimalNumber numberWithInt:indexPath.row], nil];
+       
     return cell;
 }
 

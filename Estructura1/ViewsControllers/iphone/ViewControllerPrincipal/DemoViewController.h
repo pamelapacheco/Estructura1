@@ -17,8 +17,10 @@
     UIButton *buttonFoco;
     int numberOfPages;
     int cont1;
-    int cont2;
+    NSMutableArray *arregloImagenesFocos;
 }
+
+@property (nonatomic,retain) NSArray *focosData;
 
 @property (retain, nonatomic) IBOutlet UIScrollView *scrollFocos;
 @property (retain, nonatomic) IBOutlet UIView *viewFocos;
